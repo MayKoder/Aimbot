@@ -39,10 +39,14 @@ public:
 	~ModuleAimbot();
 
 	bool Init();
-	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+
+	void StartMonteCarlo();
+	void CleanPaths();
+	void CreateTargetAndOrigin();
+	void ExecuteTrajectory();
 
 	VerletIntegrator* integrator;
 	

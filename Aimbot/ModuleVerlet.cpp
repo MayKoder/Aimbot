@@ -53,24 +53,7 @@ update_status ModuleVerlet::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) 
 	{
-		switch (creation_type)
-		{
-		case NO_SHAPE:
-
-			break;
-
-		case CIRCLE:
-			integrator->shapes.add(new Circle(new Point(), integrator, App));
-			if (App->debug->debugPointNumber == -1)
-				App->debug->debugPointNumber = 0;
-			break;
-		case BOX:
-			integrator->shapes.add(new Box(integrator, App));
-			if (App->debug->debugPointNumber == -1)
-				App->debug->debugPointNumber = 0;
-			break;
-		}
-
+		integrator->AddPoint(App->input->GetMouseX(), App->input->GetMouseY());
 	}
 
 
@@ -177,9 +160,7 @@ void ModuleVerlet::ClearWorld()
 		delete integrator->shapes[i];
 	}
 	integrator->shapes.clear();
-	App->debug->debugPointNumber = -1;
-	smallPlanetEnabled = false;
-	bigPlanetEnabled = false;
+	App->debug->debugPointNumber = integrator->world_points.count() - 1;
 }
 
 Point* ModuleVerlet::MouseHoverSelection() 

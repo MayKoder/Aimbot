@@ -33,6 +33,39 @@ update_status ModuleUI::Update()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) 
 	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (selectors[i].enabled)
+			{
+				if (CanBeSelected({ App->input->GetMouseX(), App->input->GetMouseY(), 0, 0 }, selectors[i].rect))
+				{
+					if (i == 0)
+					{
+						//Calculte monte carlo
+						App->aimbot->StartMonteCarlo();
+					}
+					else if (i == 1)
+					{
+						//Ejectue montecarlo
+						App->aimbot->ExecuteTrajectory();
+					}
+					else if (i == 2)
+					{
+						//Clear all world
+						ShapeType selType = App->verlet->creation_type;
+						
+						App->aimbot->CleanPaths();
+
+						App->verlet->ClearWorld();
+
+						App->aimbot->CreateTargetAndOrigin();
+						App->verlet->creation_type = selType;
+					}
+				}
+			}
+		}
+
+
 		if (CanBeSelected({ App->input->GetMouseX(), App->input->GetMouseY(), 0, 0 }, menu_button.rect)
 			|| (menu_button.enabled == false && !CanBeSelected({ App->input->GetMouseX(), App->input->GetMouseY(), 0, 0 }, selection_screen.rect)))
 		{
@@ -41,27 +74,6 @@ update_status ModuleUI::Update()
 				ui_elements[i]->enabled = !ui_elements[i]->enabled;
 			}
 		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			if(selectors[i].enabled)
-			{
-				if (CanBeSelected({ App->input->GetMouseX(), App->input->GetMouseY(), 0, 0 }, selectors[i].rect))
-				{
-					if (i == 3)
-					{
-						ShapeType selType = App->verlet->creation_type;
-						App->verlet->ClearWorld();
-						App->verlet->creation_type = selType;
-					}
-					else
-					{
-						App->verlet->creation_type = selectors[i].OnClick();
-					}
-				}
-			}
-		}
-
 	}
 
 	for (unsigned int i = 0; i < ui_elements.count(); i++)

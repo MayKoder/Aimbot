@@ -16,10 +16,35 @@ bool ModuleAimbot::Init()
 {
 	integrator = App->verlet->integrator;
 
-	origin = integrator->AddPoint(50, 500);
+	CreateTargetAndOrigin();
+
+	return true;
+}
+
+// PreUpdate: clear buffer
+void ModuleAimbot::StartMonteCarlo()
+{
+	aimbotActive = true;
+}
+
+void ModuleAimbot::CleanPaths() 
+{
+	for (int i = 0; i < MAX_PATHS; i++)
+	{
+		paths[i].ClearPath();
+	}
+}
+
+void ModuleAimbot::CreateTargetAndOrigin() 
+{
+
+	int h_a = rand() % ((SCREEN_HEIGHT - 50) - 50 + 1) + 50;
+	int h_b = rand() % ((SCREEN_HEIGHT - 50) - 50 + 1) + 50;
+		
+	origin = integrator->AddPoint(50, h_a);
 	origin->isSimulated = false;
 
-	target = integrator->AddPoint(800, 400);
+	target = integrator->AddPoint(800, h_b);
 	target->isSimulated = false;
 
 	aimbotActive = false;
@@ -30,46 +55,36 @@ bool ModuleAimbot::Init()
 		paths[i].isValidPath = false;
 		paths[i].drawColor.SetGrey();
 	}
+
 	currentItinerations = 0;
 	angle = 0;
-
-	return true;
 }
 
-// PreUpdate: clear buffer
-update_status ModuleAimbot::PreUpdate()
+void ModuleAimbot::ExecuteTrajectory() 
 {
+	if (selected_path) 
+	{
+		for (int i = 0; i < MAX_PATHS; i++)
+		{
+			if (!paths[i].isValidPath)
+			{
+				paths[i].ClearPath();
+			}
+			else
+			{
+				selected_path->drawColor.SetGreen(5);
+			}
+		}
 
-	
-
-	return UPDATE_CONTINUE;
+		Point* temp_point = integrator->AddPoint(origin->x, origin->y);
+		temp_point->radius = 5;
+		integrator->AddForce(temp_point, { selected_path->velocity.x, selected_path->velocity.y });
+	}
 }
 
 // Update: debug camera
 update_status ModuleAimbot::Update()
 {
-
-	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
-	{
-		aimbotActive = true;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-	{
-		for (int i = 0; i < MAX_PATHS; i++)
-		{
-			if (!paths[i].isValidPath)
-				paths[i].ClearPath();
-		}
-	}
-	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
-	{
-		Point* a = integrator->AddPoint(origin->x, origin->y);
-		a->radius = 5;
-		integrator->AddForce(a, {selected_path->velocity.x, selected_path->velocity.y});
-
-
-	}
-
 	if (aimbotActive) 
 	{
 		if (currentItinerations < MAX_PATHS) 
