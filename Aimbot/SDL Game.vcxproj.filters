@@ -77,9 +77,6 @@
     <ClInclude Include="p2SString.h">
       <Filter>Header Files\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="GravitationalField.h">
-      <Filter>Verlet Integrator Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -120,9 +117,6 @@
     </ClCompile>
     <ClCompile Include="ModuleDebug.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GravitationalField.cpp">
-      <Filter>Verlet Integrator Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
