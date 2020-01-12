@@ -58,13 +58,7 @@ update_status ModuleVerlet::Update()
 		case NO_SHAPE:
 
 			break;
-		case PLANET:
-			bigPlanetEnabled = true;
-			smallPlanetEnabled = true;
-			break;
-		case LINE:
-			//integrator->InitPoint(world_points.add(new Point())->data, { (float)App->input->GetMouseX(), (float)App->input->GetMouseY() });
-			break;
+
 		case CIRCLE:
 			integrator->shapes.add(new Circle(new Point(), integrator, App));
 			if (App->debug->debugPointNumber == -1)
