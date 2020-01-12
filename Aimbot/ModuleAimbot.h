@@ -8,7 +8,7 @@
 #include"p2List_Extended.h"
 
 #define MAX_PATH_CALC 150
-#define MAX_PATHS 10
+#define MAX_PATHS 15
 
 struct MonteCarlo_Path
 {
@@ -16,6 +16,16 @@ struct MonteCarlo_Path
 	Color drawColor;
 	bool calculated;
 	bool isValidPath;
+	vector2 velocity;
+
+	void ClearPath() 
+	{
+		path_points.clear();
+		calculated = false;
+		isValidPath = false;
+	}
+
+
 };
 
 struct Point;
@@ -43,6 +53,7 @@ public:
 	float angle;
 
 	MonteCarlo_Path paths[MAX_PATHS];
+	MonteCarlo_Path* selected_path;
 
 };
 

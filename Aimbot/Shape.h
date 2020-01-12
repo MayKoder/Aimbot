@@ -25,6 +25,7 @@ struct Point
 
 	//This needs to be converted to a real dt
 	bool canCollide;
+	bool isSimulated;
 	float dt;
 
 	SDL_Rect selector_rect;

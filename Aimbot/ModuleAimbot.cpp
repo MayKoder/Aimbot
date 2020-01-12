@@ -17,8 +17,10 @@ bool ModuleAimbot::Init()
 	integrator = App->verlet->integrator;
 
 	origin = integrator->AddPoint(50, 500);
+	origin->isSimulated = false;
 
-	target = integrator->AddPoint(800, 500);
+	target = integrator->AddPoint(800, 400);
+	target->isSimulated = false;
 
 	aimbotActive = false;
 
@@ -51,6 +53,22 @@ update_status ModuleAimbot::Update()
 	{
 		aimbotActive = true;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+	{
+		for (int i = 0; i < MAX_PATHS; i++)
+		{
+			if (!paths[i].isValidPath)
+				paths[i].ClearPath();
+		}
+	}
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		Point* a = integrator->AddPoint(origin->x, origin->y);
+		a->radius = 5;
+		integrator->AddForce(a, {selected_path->velocity.x, selected_path->velocity.y});
+
+
+	}
 
 	if (aimbotActive) 
 	{
@@ -66,7 +84,8 @@ update_status ModuleAimbot::Update()
 
 			a->canCollide = false;
 
-			integrator->AddForce(a, { 750.f * (float)COS(angle), -750.f * (float)SIN(angle) });
+			paths[currentItinerations].velocity = { 1000.f * (float)COS(angle), -1000.f * (float)SIN(angle) };
+			integrator->AddForce(a, paths[currentItinerations].velocity);
 			for (int j = 0; j < MAX_PATH_CALC; j++)
 			{
 				vector2 point = { a->x, a->y };
@@ -77,6 +96,7 @@ update_status ModuleAimbot::Update()
 				{
 					paths[currentItinerations].drawColor.SetGreen(255);
 					paths[currentItinerations].isValidPath = true;
+					selected_path = &paths[currentItinerations];
 					break;
 				}
 			}
