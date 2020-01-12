@@ -17,14 +17,12 @@ bool ModuleUI::Init()
 {
 	bool ret = true;
 	
-	sprtsheet = App->textures->Load("Sprites/Menu_Spritesheet.png");
+	sprtsheet = App->textures->Load("Sprites/Menu_Spritesheet_2.png");
 
 	SetButton(&menu_button, { SCREEN_WIDTH - 40, 20, 20, 20 }, true, ShapeType::NO_SHAPE, {0, 0, 0, 0}, {255, 255, 255, 255});
 	SetButton(&selection_screen, { SCREEN_WIDTH - 200, 0, 200, SCREEN_HEIGHT }, false, ShapeType::NO_SHAPE, {0, 0, 200, 540}, { 0, 255, 255, 100 });
 	SetButton(&selectors[0], { SCREEN_WIDTH - 167, 20, 140, 140 }, false, ShapeType::CIRCLE, {200, 0, 140, 140}, {0, 0, 255, 100});
 	SetButton(&selectors[1], { SCREEN_WIDTH - 167, 175, 140, 140 }, false, ShapeType::PLANET, {200, 140, 140, 140}, { 0, 0, 255, 100 });
-	SetButton(&selectors[2], { SCREEN_WIDTH - 167, 330, 140, 140 }, false, ShapeType::BOX, {200, 280, 140, 140}, { 0, 0, 255, 100 });
-	SetButton(&selectors[3], { SCREEN_WIDTH - 167, SCREEN_HEIGHT - 56, 140, 40 }, false, ShapeType::NO_SHAPE, {200, 280+140, 140, 40}, { 0, 0, 255, 100 });
 
 	return ret;
 }
