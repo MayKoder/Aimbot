@@ -23,6 +23,7 @@ bool ModuleUI::Init()
 	SetButton(&selection_screen, { SCREEN_WIDTH - 200, 0, 200, SCREEN_HEIGHT }, false, ShapeType::NO_SHAPE, {0, 0, 200, 540}, { 0, 255, 255, 100 });
 	SetButton(&selectors[0], { SCREEN_WIDTH - 167, 20, 140, 140 }, false, ShapeType::CIRCLE, {200, 0, 140, 140}, {0, 0, 255, 100});
 	SetButton(&selectors[1], { SCREEN_WIDTH - 167, 175, 140, 140 }, false, ShapeType::PLANET, {200, 140, 140, 140}, { 0, 0, 255, 100 });
+	SetButton(&selectors[2], { SCREEN_WIDTH - 167, SCREEN_HEIGHT - 60, 140, 49 }, false, ShapeType::NO_SHAPE, { 200, 280, 140, 49 }, { 0, 0, 255, 100 });
 
 	return ret;
 }
