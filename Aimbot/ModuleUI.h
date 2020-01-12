@@ -47,7 +47,7 @@ public:
 	UI_Button selection_screen;
 
 	//Selection buttons
-	UI_Button selectors[4];
+	UI_Button selectors[2];
 	SDL_Texture* sprtsheet;
 
 
