@@ -124,5 +124,8 @@
     <ClCompile Include="ModuleDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleAimbot.cpp">
+      <Filter>Aimbot Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

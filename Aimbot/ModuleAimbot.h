@@ -24,6 +24,9 @@ public:
 	bool CleanUp();
 
 	VerletIntegrator* integrator;
+	
+	Point* origin;
+	Point* target;
 
 };
 
