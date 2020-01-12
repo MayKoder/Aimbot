@@ -24,6 +24,7 @@ struct Point
 	SDL_Color color;
 
 	//This needs to be converted to a real dt
+	bool canCollide;
 	float dt;
 
 	SDL_Rect selector_rect;

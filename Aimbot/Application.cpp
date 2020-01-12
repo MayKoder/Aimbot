@@ -7,6 +7,7 @@ Application::Application()
 	textures = new ModuleTextures(this);
 	input = new ModuleInput(this);
 	verlet = new ModuleVerlet(this, true);
+	aimbot = new ModuleAimbot(this, true);
 	UI = new ModuleUI(this, true);
 	fonts = new ModuleFonts(this);
 	debug = new ModuleDebug(this);
@@ -21,6 +22,7 @@ Application::Application()
 	AddModule(textures);
 	AddModule(input);
 	AddModule(verlet);
+	AddModule(aimbot);
 	AddModule(UI);
 	AddModule(fonts);
 	AddModule(debug);

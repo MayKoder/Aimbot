@@ -72,6 +72,36 @@ struct vector2 {
 
 };
 
+struct Color
+{
+	int r;
+	int g;
+	int b;
+	int a;
+
+	void SetRed(int s_a) {
+		r = 255;
+		g = 0;
+		b = 0;
+		a = s_a;
+	}
+
+	void SetGreen(int s_a) {
+		r = 0;
+		g = 255;
+		b = 0;
+		a = s_a;
+	}
+
+	void SetGrey() {
+		r = 255;
+		g = 255;
+		b = 255;
+		a = 2;
+	}
+
+};
+
 
 // Configuration -----------
 #define SCREEN_WIDTH 960

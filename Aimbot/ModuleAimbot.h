@@ -7,8 +7,19 @@
 #include"Shape.h"
 #include"p2List_Extended.h"
 
+#define MAX_PATH_CALC 150
+#define MAX_PATHS 10
+
+struct MonteCarlo_Path
+{
+	p2List_Extended<vector2> path_points;
+	Color drawColor;
+	bool calculated;
+	bool isValidPath;
+};
 
 struct Point;
+class VerletIntegrator;
 //Module verlet
 class ModuleAimbot : public Module
 {
@@ -27,7 +38,13 @@ public:
 	
 	Point* origin;
 	Point* target;
+	bool aimbotActive;
+	int currentItinerations;
+	float angle;
+
+	MonteCarlo_Path paths[MAX_PATHS];
 
 };
+
 
 #endif // __ModuleAimbot_H__

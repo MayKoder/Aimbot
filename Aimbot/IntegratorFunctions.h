@@ -23,10 +23,13 @@ public:
 
 	//Update point position
 	void updatePoints();
+	void updateSinglePoint(Point* p);
+	bool CheckCollision(Point* a, Point* b);
 
 
 	void AddForce(Point* p, vector2 force);
 	void OnCollision(Point* p, Point* check_Point);
+	Point* AddPoint(int x, int y);
 	Application* App;
 
 

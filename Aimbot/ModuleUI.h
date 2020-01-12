@@ -6,14 +6,22 @@
 #include "Shape.h"
 
 enum ShapeType;
+enum UIType
+{
+	EXECUTE,
+	CALCULATE,
+	RESET
+};
+
 struct UI_Button {
 	bool enabled = true;
 	SDL_Rect rect;
 	ShapeType type;
+	UIType ui_type;
 	SDL_Color color;
 	SDL_Rect sptr_rect;
 
-	ShapeType OnClick() 
+	ShapeType OnClick()
 	{
 		return type;
 	}
@@ -40,6 +48,7 @@ public:
 	bool CanBeSelected(const SDL_Rect& rect, const SDL_Rect& r);
 
 	void SetButton(UI_Button* button, SDL_Rect pos_size, bool enabled, ShapeType creation_type, SDL_Rect sprt_rect, SDL_Color color);
+	void SetButton(UI_Button* button, SDL_Rect pos_size, bool enabled, UIType creation_type, SDL_Rect sprt_rect, SDL_Color color);
 
 public:
 

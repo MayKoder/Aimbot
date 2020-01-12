@@ -8,10 +8,11 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-#include"ModuleVerlet.h"
-#include"ModuleUI.h"
+#include "ModuleVerlet.h"
+#include "ModuleUI.h"
 #include "ModuleFonts.h"
 #include "ModuleDebug.h"
+#include "ModuleAimbot.h"
 
 class ModuleDebug;
 class ModuleVerlet;
@@ -23,6 +24,7 @@ public:
 	ModuleTextures* textures;
 	ModuleInput* input;
 	ModuleVerlet* verlet;
+	ModuleAimbot* aimbot;
 	ModuleUI* UI;
 	ModuleFonts* fonts;
 	ModuleDebug* debug;

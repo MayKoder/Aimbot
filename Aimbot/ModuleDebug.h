@@ -16,6 +16,7 @@ public:
 	bool Start();
 	update_status Update();
 
+	bool enabled;
 	int debugPointNumber = -1;
 };
 

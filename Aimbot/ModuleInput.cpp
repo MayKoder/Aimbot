@@ -103,6 +103,9 @@ update_status ModuleInput::PreUpdate()
 	if(keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 
+	if (keyboard[SDL_SCANCODE_F1] == KEY_UP)
+		App->debug->enabled = !App->debug->enabled;
+
 	SDL_GetMouseState(&mouse_x, &mouse_y);
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
