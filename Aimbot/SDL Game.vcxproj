@@ -74,6 +74,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="IntegratorFunctions.h" />
     <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="ModuleAimbot.h" />
     <ClInclude Include="ModuleDebug.h" />
     <ClInclude Include="ModuleFonts.h" />
     <ClInclude Include="ModuleUI.h" />

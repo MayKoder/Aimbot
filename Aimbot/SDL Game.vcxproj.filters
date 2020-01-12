@@ -15,6 +15,9 @@
     <Filter Include="Verlet Integrator Files">
       <UniqueIdentifier>{1679e250-244b-4551-88d4-1fdf9f20ba71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Aimbot Files">
+      <UniqueIdentifier>{41826742-02dd-45ec-8ed7-90e7fa0c696b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="p2SString.h">
       <Filter>Header Files\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAimbot.h">
+      <Filter>Aimbot Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

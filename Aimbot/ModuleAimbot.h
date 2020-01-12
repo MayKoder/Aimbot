@@ -21,21 +21,9 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
-	void ClearWorld();
 	bool CleanUp();
 
 	VerletIntegrator* integrator;
-
-
-	Point* selected_point;
-	ShapeType creation_type;
-
-	Point* MouseHoverSelection();
-
-	bool bigPlanetEnabled = false;
-	bool smallPlanetEnabled = false;
-
-	int selector_type = 0;
 
 };
 
