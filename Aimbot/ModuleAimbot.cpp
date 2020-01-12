@@ -33,6 +33,7 @@ void ModuleAimbot::CleanPaths()
 	{
 		paths[i].ClearPath();
 	}
+	selected_path = nullptr;
 }
 
 void ModuleAimbot::CreateTargetAndOrigin() 
@@ -54,32 +55,100 @@ void ModuleAimbot::CreateTargetAndOrigin()
 		paths[i].calculated = false;
 		paths[i].isValidPath = false;
 		paths[i].drawColor.SetGrey();
+		paths[i].velocity.Zero();
 	}
 
 	currentItinerations = 0;
 	angle = 0;
 }
-
-void ModuleAimbot::ExecuteTrajectory() 
+vector2 ModuleAimbot::ExecuteMonteCarlo(Point* origin, Point* target) 
 {
-	if (selected_path) 
+	vector2 ret = { 0.f, 0.f };
+	if (currentItinerations < MAX_PATHS)
 	{
-		for (int i = 0; i < MAX_PATHS; i++)
+		//Do montecarlo
+		float wind = 3; //m/s
+		float angle_increment = 360 / (MAX_PATHS - 1);
+
+		Point* a = new Point();
+		integrator->InitPoint(a, { origin->x, origin->y });
+		a->radius = 3;
+
+		a->canCollide = false;
+
+		ret = { 1000.f * (float)COS(angle), 1000.f * (float)SIN(angle) };
+
+		paths[currentItinerations].velocity = ret;
+		integrator->AddForce(a, paths[currentItinerations].velocity);
+		for (int j = 0; j < MAX_PATH_CALC; j++)
 		{
-			if (!paths[i].isValidPath)
+			vector2 point = { a->x, a->y };
+			paths[currentItinerations].path_points.add(point);
+			integrator->updateSinglePoint(a);
+
+			if (integrator->CheckCollision(a, target))
 			{
-				paths[i].ClearPath();
-			}
-			else
-			{
-				selected_path->drawColor.SetGreen(5);
+				paths[currentItinerations].drawColor.SetGreen(255);
+				paths[currentItinerations].isValidPath = true;
+				break;
 			}
 		}
 
+		integrator->InitPoint(a, { origin->x, origin->y });
+		angle += angle_increment;
+		paths[currentItinerations].calculated = true;
+
+
+
+		delete a;
+
+		currentItinerations++;
+	}
+	else
+	{
+		aimbotActive = false;
+		currentItinerations = 0;
+		angle = 0;
+	}
+
+	return ret;
+
+}
+
+void ModuleAimbot::ExecuteTrajectory() 
+{
+
+	for (int i = 0; i < MAX_PATHS; i++)
+	{
+		if (!paths[i].isValidPath)
+		{
+			paths[i].ClearPath();
+		}
+		else
+		{
+			if (selected_path)
+			{
+				//Select fastest path
+				if (paths[i].path_points.count() < selected_path->path_points.count()) 
+				{
+					selected_path = &paths[i];
+				}
+			}
+			else
+			{
+				selected_path = &paths[i];
+			}
+			paths[i].drawColor.SetGreen(5);
+		}
+	}
+
+	if (selected_path) 
+	{
 		Point* temp_point = integrator->AddPoint(origin->x, origin->y);
 		temp_point->radius = 5;
 		integrator->AddForce(temp_point, { selected_path->velocity.x, selected_path->velocity.y });
 	}
+
 }
 
 // Update: debug camera
@@ -87,52 +156,9 @@ update_status ModuleAimbot::Update()
 {
 	if (aimbotActive) 
 	{
-		if (currentItinerations < MAX_PATHS) 
-		{
-			//Do montecarlo
-			float wind = 3; //m/s
-			float angle_increment = 360 / (MAX_PATHS - 1);
-
-			Point* a = new Point();
-			integrator->InitPoint(a, { origin->x, origin->y });
-			a->radius = 3;
-
-			a->canCollide = false;
-
-			paths[currentItinerations].velocity = { 1000.f * (float)COS(angle), -1000.f * (float)SIN(angle) };
-			integrator->AddForce(a, paths[currentItinerations].velocity);
-			for (int j = 0; j < MAX_PATH_CALC; j++)
-			{
-				vector2 point = { a->x, a->y };
-				paths[currentItinerations].path_points.add(point);
-				integrator->updateSinglePoint(a);
-
-				if (integrator->CheckCollision(a, target))
-				{
-					paths[currentItinerations].drawColor.SetGreen(255);
-					paths[currentItinerations].isValidPath = true;
-					selected_path = &paths[currentItinerations];
-					break;
-				}
-			}
-
-			integrator->InitPoint(a, { origin->x, origin->y });
-			angle += angle_increment;
-			paths[currentItinerations].calculated = true;
-	
-
-
-			delete a;
-
-			currentItinerations++;
-		}
-		else
-		{
-			aimbotActive = false;
-			currentItinerations = 0;
-			angle = 0;
-		}
+		ExecuteMonteCarlo(origin, target);
 	}
+
 	for (int i = 0; i < MAX_PATHS; i++)
 	{
 		if (paths[i].calculated)
@@ -144,17 +170,6 @@ update_status ModuleAimbot::Update()
 			}
 		}
 	}
-
-
-	return UPDATE_CONTINUE;
-}
-
-// PostUpdate present buffer to screen
-update_status ModuleAimbot::PostUpdate()
-{
-
-
-
 
 	return UPDATE_CONTINUE;
 }

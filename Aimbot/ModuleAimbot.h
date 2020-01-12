@@ -23,9 +23,10 @@ struct MonteCarlo_Path
 		path_points.clear();
 		calculated = false;
 		isValidPath = false;
+
+		drawColor.SetGrey();
+		velocity.Zero();
 	}
-
-
 };
 
 struct Point;
@@ -40,10 +41,10 @@ public:
 
 	bool Init();
 	update_status Update();
-	update_status PostUpdate();
 	bool CleanUp();
 
 	void StartMonteCarlo();
+	vector2 ExecuteMonteCarlo(Point* origin, Point* target);
 	void CleanPaths();
 	void CreateTargetAndOrigin();
 	void ExecuteTrajectory();
