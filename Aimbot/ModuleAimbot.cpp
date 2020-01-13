@@ -16,6 +16,8 @@ bool ModuleAimbot::Init()
 {
 	integrator = App->verlet->integrator;
 
+
+	//Spawn origin and target in random coords
 	CreateTargetAndOrigin();
 
 	return true;
@@ -29,6 +31,7 @@ void ModuleAimbot::StartMonteCarlo()
 
 void ModuleAimbot::CleanPaths() 
 {
+	//Reset paths
 	for (int i = 0; i < MAX_PATHS; i++)
 	{
 		paths[i].ClearPath();
@@ -64,32 +67,38 @@ void ModuleAimbot::CreateTargetAndOrigin()
 	currentItinerations = 0;
 	angle = 0;
 }
+
+//Main aimbot func
 vector2 ModuleAimbot::ExecuteMonteCarlo(Point* origin, Point* target) 
 {
 	vector2 ret = { 0.f, 0.f };
 	if (currentItinerations < MAX_PATHS)
 	{
-		//Do montecarlo
-		float wind = 3; //m/s
+		//Get the angle increment
 		float angle_increment = 360 / (MAX_PATHS - 1);
 
-		Point* a = new Point();
-		integrator->InitPoint(a, { origin->x, origin->y });
-		a->radius = 3;
-
-		a->canCollide = false;
+		//Create bullet to simulate with
+		Point* simulatedPoint = new Point();
+		integrator->InitPoint(simulatedPoint, { origin->x, origin->y });
+		simulatedPoint->radius = 3;
+		simulatedPoint->canCollide = false;
 
 		ret = { 1000.f * (float)COS(angle), 1000.f * (float)SIN(angle) };
-
 		paths[currentItinerations].velocity = ret;
-		integrator->AddForce(a, paths[currentItinerations].velocity);
+
+		integrator->AddForce(simulatedPoint, paths[currentItinerations].velocity);
+
+		//Simulate bullets in angles
 		for (int j = 0; j < MAX_PATH_CALC; j++)
 		{
-			vector2 point = { a->x, a->y };
+			//Simulate bullet
+			vector2 point = { simulatedPoint->x, simulatedPoint->y };
 			paths[currentItinerations].path_points.add(point);
-			integrator->updateSinglePoint(a);
+			integrator->updateSinglePoint(simulatedPoint);
 
-			if (integrator->CheckCollision(a, target))
+			//If there is a collision with the target, the current simulated path is a 
+			//correct path to the target
+			if (integrator->CheckCollision(simulatedPoint, target))
 			{
 				paths[currentItinerations].drawColor.SetGreen(255);
 				paths[currentItinerations].isValidPath = true;
@@ -97,15 +106,15 @@ vector2 ModuleAimbot::ExecuteMonteCarlo(Point* origin, Point* target)
 			}
 		}
 
-		integrator->InitPoint(a, { origin->x, origin->y });
+		//Increase angle and restart simulated bullet
+		integrator->InitPoint(simulatedPoint, { origin->x, origin->y });
 		angle += angle_increment;
 		paths[currentItinerations].calculated = true;
 
 
-
-		delete a;
-
+		delete simulatedPoint;
 		currentItinerations++;
+
 	}
 	else
 	{
@@ -120,7 +129,7 @@ vector2 ModuleAimbot::ExecuteMonteCarlo(Point* origin, Point* target)
 
 void ModuleAimbot::ExecuteTrajectory() 
 {
-
+	//Select short path and execute it
 	for (int i = 0; i < MAX_PATHS; i++)
 	{
 		if (!paths[i].isValidPath)
@@ -145,6 +154,7 @@ void ModuleAimbot::ExecuteTrajectory()
 		}
 	}
 
+	//Spawn bullet with path vel
 	if (selected_path) 
 	{
 		Point* temp_point = integrator->AddPoint(origin->x, origin->y);
@@ -157,11 +167,13 @@ void ModuleAimbot::ExecuteTrajectory()
 // Update: debug camera
 update_status ModuleAimbot::Update()
 {
+	//Execute aimbot
 	if (aimbotActive) 
 	{
 		ExecuteMonteCarlo(origin, target);
 	}
 
+	//Draw paths
 	for (int i = 0; i < MAX_PATHS; i++)
 	{
 		if (paths[i].calculated)
@@ -182,6 +194,7 @@ bool ModuleAimbot::CleanUp()
 {
 	LOG("Destroying Verlet");
 
+	//Clear paths
 	for (int i = 0; i < MAX_PATHS; i++)
 	{
 		paths[i].path_points.clear();
