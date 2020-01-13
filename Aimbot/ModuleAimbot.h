@@ -8,7 +8,7 @@
 #include"p2List_Extended.h"
 
 #define MAX_PATH_CALC 150
-#define MAX_PATHS 15
+#define MAX_PATHS 20
 
 struct MonteCarlo_Path
 {
