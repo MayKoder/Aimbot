@@ -41,11 +41,14 @@ void ModuleAimbot::CreateTargetAndOrigin()
 
 	int h_a = rand() % ((SCREEN_HEIGHT - 50) - 50 + 1) + 50;
 	int h_b = rand() % ((SCREEN_HEIGHT - 50) - 50 + 1) + 50;
+
+	int w_a = rand() % ((300 - 100) - 100 + 1) + 100;
+	int w_b = rand() % (900 - 700 + 1) + 700;
 		
-	origin = integrator->AddPoint(50, h_a);
+	origin = integrator->AddPoint(w_a, h_a);
 	origin->isSimulated = false;
 
-	target = integrator->AddPoint(800, h_b);
+	target = integrator->AddPoint(w_b, h_b);
 	target->isSimulated = false;
 
 	aimbotActive = false;
