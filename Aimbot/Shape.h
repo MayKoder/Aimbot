@@ -99,8 +99,8 @@ public:
 		offsetX = (int)(rightPoint->x - leftPoint->x);
 		offsetY = (int)(rightPoint->y - leftPoint->y);
 
-		lenght = sqrtf(pow(offsetX, 2) +
-			pow(offsetY, 2) * 1.0f);
+		lenght = sqrtf((float)pow(offsetX, 2) +
+			(float)pow(offsetY, 2) * 1.0f);
 
 
 	}

@@ -135,7 +135,7 @@ void VerletIntegrator::updatePoints()
 
 		updateSinglePoint(p);
 
-		App->renderer->DrawLine(p->old_x, p->old_y, p->x, p->y, 0, 0, 255, 255);
+		App->renderer->DrawLine((int)p->old_x, (int)p->old_y, (int)p->x, (int)p->y, 0, 0, 255, 255);
 
 		temp_list_item = temp_list_item->next;
 

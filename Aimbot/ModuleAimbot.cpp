@@ -157,7 +157,7 @@ void ModuleAimbot::ExecuteTrajectory()
 	//Spawn bullet with path vel
 	if (selected_path) 
 	{
-		Point* temp_point = integrator->AddPoint(origin->x, origin->y);
+		Point* temp_point = integrator->AddPoint((int)origin->x, (int)origin->y);
 		temp_point->radius = 5;
 		integrator->AddForce(temp_point, { selected_path->velocity.x, selected_path->velocity.y });
 	}
@@ -178,10 +178,10 @@ update_status ModuleAimbot::Update()
 	{
 		if (paths[i].calculated)
 		{
-			for (int j = 0; j < paths[i].path_points.count(); j++)
+			for (unsigned int j = 0; j < paths[i].path_points.count(); j++)
 			{
 				if (paths[i].path_points[j].x != 0 && paths[i].path_points[j].y != 0)
-					App->renderer->DrawCircle(paths[i].path_points[j].x, paths[i].path_points[j].y, 3, paths[i].drawColor.r, paths[i].drawColor.g, paths[i].drawColor.b, paths[i].drawColor.a);
+					App->renderer->DrawCircle((int)paths[i].path_points[j].x, (int)paths[i].path_points[j].y, 3, paths[i].drawColor.r, paths[i].drawColor.g, paths[i].drawColor.b, paths[i].drawColor.a);
 			}
 		}
 	}
